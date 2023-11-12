@@ -1,0 +1,144 @@
+.spinner {
+    width: 200px;
+    height: 200px;
+    position: relative;
+  }
+  
+  .spinner img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    animation: spin0 2s steps(24) infinite;
+  }
+  
+  @keyframes spin {
+    0% { opacity: 1; }
+    4.166% { opacity: 0; }
+    8.333% { opacity: 0; }
+    12.5% { opacity: 0; }
+    16.666% { opacity: 0; }
+    20.833% { opacity: 0; }
+    25% { opacity: 0; }
+    29.166% { opacity: 0; }
+    33.333% { opacity: 0; }
+    37.5% { opacity: 0; }
+    41.666% { opacity: 0; }
+    45.833% { opacity: 0; }
+    50% { opacity: 0; }
+    54.166% { opacity: 0; }
+    58.333% { opacity: 0; }
+    62.5% { opacity: 0; }
+    66.666% { opacity: 0; }
+    70.833% { opacity: 0; }
+    75% { opacity: 0; }
+    79.166% { opacity: 0; }
+    83.333% { opacity: 0; }
+    87.5% { opacity: 0; }
+    91.666% { opacity: 0; }
+    95.833% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes spin0 {
+    0% {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+    4.166% {
+      opacity: 1;
+      transform: rotate(15deg);
+    }
+    8.333% {
+      opacity: 1;
+      transform: rotate(30deg);
+    }
+    12.5% {
+      opacity: 1;
+      transform: rotate(45deg);
+    }
+    16.666% {
+      opacity: 1;
+      transform: rotate(60deg);
+    }
+    20.833% {
+      opacity: 1;
+      transform: rotate(75deg);
+    }
+    25% {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+    29.166% {
+      opacity: 1;
+      transform: rotate(105deg);
+    }
+    33.333% {
+      opacity: 1;
+      transform: rotate(120deg);
+    }
+    37.5% {
+      opacity: 1;
+      transform: rotate(135deg);
+    }
+    41.666% {
+      opacity: 1;
+      transform: rotate(150deg);
+    }
+    45.833% {
+      opacity: 1;
+      transform: rotate(165deg);
+    }
+    50% {
+      opacity: 1;
+      transform: rotate(180deg);
+    }
+    54.166% {
+      opacity: 1;
+      transform: rotate(195deg);
+    }
+    58.333% {
+      opacity: 1;
+      transform: rotate(210deg);
+    }
+    62.5% {
+      opacity: 1;
+      transform: rotate(225deg);
+    }
+    66.666% {
+      opacity: 1;
+      transform: rotate(240deg);
+    }
+    70.833% {
+      opacity: 1;
+      transform: rotate(255deg);
+    }
+    75% {
+      opacity: 1;
+      transform: rotate(270deg);
+    }
+    79.166% {
+      opacity: 1;
+      transform: rotate(285deg);
+    }
+    83.333% {
+      opacity: 1;
+      transform: rotate(300deg);
+    }
+    87.5% {
+      opacity: 1;
+      transform: rotate(315deg);
+    }
+    91.666% {
+      opacity: 1;
+      transform: rotate(330deg);
+    }
+    95.833% {
+      opacity: 1;
+      transform: rotate(345deg);
+    }
+    100% {
+      opacity: 1;
+      transform: rotate(360deg);
+    }
+  }
