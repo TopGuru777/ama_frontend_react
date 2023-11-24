@@ -5,6 +5,8 @@ import LoadingScreen from './LoadingScreen'
 import { useNavigate } from 'react-router-dom';
 import AppContext from '../contexts/AppContext';
 import sendChatGPTRequest from '../services/chatgpt';
+import { Helmet } from 'react-helmet';
+import FusekiService from '../services/fuseki';
 
 type Props = {}
 
@@ -31,10 +33,26 @@ function Home({ }: Props) {
     const submitQuestion = async () => {
         setShowLoadingScreen(true);
         try {
-            const response = await sendChatGPTRequest(question);
-            setShowLoadingScreen(false);
+            // const response = await sendChatGPTRequest(question);
+            // setShowLoadingScreen(false);
             updateQuestion(question);
-            updateAnswer(response?.choices[0]?.message?.content ?? "");
+
+            const response = await FusekiService.getSPARQLResponse(question);
+
+            // console.log(response);
+
+            setShowLoadingScreen(false);
+            if (Object.keys(response).indexOf("data") != -1) {
+                updateAnswer(response.data);
+            } else {
+                updateAnswer("Failed to generate SPARQL query from that question. Please input single sentence. Ex: what is Long Service Leave Charge? Fetching ChatGPT-4 for further process.");
+                setShowLoadingScreen(true);
+                const gptResponse = await sendChatGPTRequest(question);
+                setShowLoadingScreen(false);
+                updateAnswer(`GPT Answered: \n ${gptResponse?.choices[0]?.message?.content ?? "Could not answer."}`);
+            }
+
+            // updateAnswer(response?.choices[0]?.message?.content ?? "");
             navigate('/qa');
         } catch (error) {
             console.error(error);
@@ -43,6 +61,7 @@ function Home({ }: Props) {
 
     return (
         <>
+            <Helmet><title>Ask Me Anything</title></Helmet>
             {showLoadingScreen && <LoadingScreen />}
             {!showLoadingScreen &&
                 <>

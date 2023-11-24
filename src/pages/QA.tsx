@@ -5,19 +5,14 @@ import LoadingScreen from './LoadingScreen'
 import { useNavigate } from 'react-router-dom';
 import sendChatGPTRequest from '../services/chatgpt';
 import FusekiService from '../services/fuseki';
+// @ts-ignore
+import { Helmet } from 'react-helmet';
 
 
 export default function QA({ }) {
     const [newQuestion, setNewQuestion] = useState("");
     const [showLoadingScreen, setShowLoadingScreen] = useState(false);
     const { question, answer, updateQuestion, updateAnswer } = useContext(AppContext);
-
-    const testSPARQLQuery = async () => {
-        const response = await FusekiService.executeQuery("SELECT * WHERE { ?s ?p ?o } LIMIT 10");
-        console.log(response);
-    }
-
-    testSPARQLQuery();
 
     const handleKeyPress = (e: KeyboardEvent<any>) => {
         if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
@@ -36,11 +31,30 @@ export default function QA({ }) {
     const submitQuestion = async () => {
         setShowLoadingScreen(true);
         try {
-            const response = await sendChatGPTRequest(newQuestion);
+            // const sparql = FusekiService.generateSPARQLQuery(newQuestion);
+            // console.log('____FUSEKI_____', sparql);
+
+            // const fusekiResponse = await FusekiService.executeQuery(sparql);
+            // console.log('-----fuseki response-----', fusekiResponse);
+
+            // const response = await sendChatGPTRequest(newQuestion);
+            const response = await FusekiService.getSPARQLResponse(newQuestion);
+
+            // console.log(response);
+
             setShowLoadingScreen(false);
+            if (Object.keys(response).indexOf("data") != -1) {
+                updateAnswer(response.data);
+            } else {
+                updateAnswer("Failed to generate SPARQL query from that question. Please input single sentence. Ex: what is Long Service Leave Charge? Fetching ChatGPT-4 for further process.");
+                setShowLoadingScreen(true);
+                const gptResponse = await sendChatGPTRequest(newQuestion);
+                setShowLoadingScreen(false);
+                updateAnswer(`GPT Answered: \n ${gptResponse?.choices[0]?.message?.content ?? "Could not answer."}`);
+            }
+
             updateQuestion(newQuestion);
-            console.log(response);
-            updateAnswer(response?.choices[0]?.message?.content ?? "");
+            // updateAnswer(response?.choices[0]?.message?.content ?? "");
             setNewQuestion("");
         } catch (error) {
             console.error(error);
@@ -49,6 +63,7 @@ export default function QA({ }) {
 
     return (
         <>
+            <Helmet><title>Ask Me Anything</title></Helmet>
             {showLoadingScreen && <LoadingScreen />}
             {!showLoadingScreen &&
                 <>
